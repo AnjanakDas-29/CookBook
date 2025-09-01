@@ -13,7 +13,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 
 from .models import Recipe,UserProfile
 from .serializers import RecipeSerializer,UserSerializer,UserLoginSerializer
-from cookbook_app.pagination import RecipePagination
+from cookbook_app.pagination import RecipePagination,UserPagination
 
 
 
@@ -60,7 +60,7 @@ class RecipeRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
 class UserListCreateView(generics.ListCreateAPIView):
     queryset = UserProfile.objects.all()
     serializer_class = UserSerializer
-    pagination_class=RecipePagination
+    pagination_class=UserPagination
     filter_backends = [filters.SearchFilter, filters.OrderingFilter]
     search_fields=['title']
 

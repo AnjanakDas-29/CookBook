@@ -1,4 +1,7 @@
 from django.urls import path
+from django.conf import settings
+from django.conf.urls.static import static
+
 from .views import RecipeListCreateView,RecipeRetrieveUpdateDestroyView,SessionLogoutView,UserLoginView
 from .views import UserListCreateView, UserRetrieveUpdateDestroyView
 
@@ -14,4 +17,5 @@ urlpatterns = [
    
     path("users/", UserListCreateView.as_view(), name="user-list-create"),
     path("users/<int:pk>/", UserRetrieveUpdateDestroyView.as_view(), name="user-detail"),
-]
+
+]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

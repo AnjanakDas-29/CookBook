@@ -6,7 +6,7 @@ from django.contrib.auth.models import AbstractUser
 class Recipe(models.Model):
     title =models.CharField(max_length=200,blank=False)
     description = models.TextField(blank=True,null=True)
-    ingredients = models.JSONField(blank=False,null=False)
+    ingredients = models.TextField(blank=False,null=False)
     instructions = models.TextField(blank=False)
     image=models.ImageField(upload_to='images',blank=True,null=True)
     created_at =models.DateTimeField(auto_now_add=True)

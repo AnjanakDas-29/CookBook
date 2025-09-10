@@ -12,7 +12,7 @@ from rest_framework import serializers
 
 
 class RecipeSerializer(serializers.ModelSerializer):
-
+    
     class Meta:
         model = Recipe
         fields ='__all__'
@@ -46,11 +46,25 @@ class RecipeSerializer(serializers.ModelSerializer):
 class UserSerializer(serializers.ModelSerializer):
     User = get_user_model()
     password = serializers.CharField(write_only=True, required=True, validators=[validate_password])
+    #created_by = serializers.StringRelatedField(read_only=True)
+
 
     class Meta:
         model = UserProfile
-        fields = ["id", "username", "email", "first_name", "last_name", "date_joined", "password","gender"]
+        fields = ["id", "username","role", "email", "first_name", "last_name", "date_joined", "password","gender"]
         read_only_fields = ["id", "date_joined"]
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        request = self.context.get("request")
+
+        
+        if request and request.method in ["PATCH", "PUT"]:
+            self.fields["username"].required = False
+            self.fields["password"].required = False
+        else:
+            self.fields["password"].required = True
+            self.fields["username"].required = True
 
     def validate_email(self, value):
         validate_email(value)

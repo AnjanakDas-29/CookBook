@@ -11,6 +11,7 @@ class Recipe(models.Model):
     image=models.ImageField(upload_to='images',blank=True,null=True)
     created_at =models.DateTimeField(auto_now_add=True)
     updated_at=models.DateTimeField(auto_now=True)
+    created_by =models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE,related_name="recipes")
 
     def __str__(self):
         return self.title
@@ -19,14 +20,24 @@ class Recipe(models.Model):
 
 
 class UserProfile(AbstractUser):
+    ROLE_CHOICE=(
+        ("admin","Admin"),
+        ("user","User"),
+    )
+    
+    role = models.CharField(max_length=5,choices=ROLE_CHOICE, null=True, blank=True)    
     GENDER_CHOICES = (
-        ("M", "Male"),
-        ("F", "Female"),
-        ("O", "Other"),
+        ("male", "Male"),
+        ("female", "Female"),
+        ("other", "Other"),
     )
 
     #user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="profile")
-    gender = models.CharField(max_length=1, choices=GENDER_CHOICES, blank=True, null=True)
+    gender = models.CharField(max_length=6, choices=GENDER_CHOICES, blank=True, null=True)
 
     def __str__(self):
         return self.username
+
+
+
+    

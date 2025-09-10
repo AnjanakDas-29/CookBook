@@ -12,10 +12,12 @@ from rest_framework import serializers
 
 
 class RecipeSerializer(serializers.ModelSerializer):
-    
+    #created_by =serializers.StringRelatedField(default=serializers.CurrentUserDefault(),read_only=True)
+
     class Meta:
         model = Recipe
-        fields ='__all__'
+        fields = ["id", "title", "description","ingredients","instructions","image","created_by", "created_at","updated_at"]
+        read_only_fields = ["created_by", "created_at"]
         
 
     

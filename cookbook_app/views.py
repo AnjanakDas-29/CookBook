@@ -42,6 +42,9 @@ class RecipeListCreateView(generics.ListCreateAPIView):
         if self.request.method == "POST":
             return [permissions.IsAuthenticated()]
         return [permissions.AllowAny()]
+    
+    def perform_create(self, serializer):
+        serializer.save(created_by=self.request.user)
 
 class RecipeRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
     queryset=Recipe.objects.all()

@@ -9,7 +9,7 @@ from rest_framework.permissions import AllowAny
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.exceptions import ValidationError
 
-from .permissions import IsSelfOrAdmin, IsOwnerOrReadOnly 
+from .permissions import IsSelfOrAdmin, IsOwnerOrReadOnly,IsCustomAdmin
 
 
 from .models import Recipe,UserProfile
@@ -90,7 +90,7 @@ class UserListCreate(generics.ListCreateAPIView):
 
     def get_permissions(self):
         if self.request.method == "GET":
-            return [permissions.IsAdminUser()]
+            return [IsCustomAdmin()]
         return [permissions.AllowAny()]
 
         

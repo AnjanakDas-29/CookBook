@@ -2,15 +2,15 @@ from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
 
-from .views import RecipeListCreateView,RecipeRetrieveUpdateDestroyView,SessionLogoutView,UserLoginView
-from .views import UserRegisterView, UserRetrieveUpdateDestroyView,UserListCreate
+from .views import RecipeListCreateView,RecipeRetrieveUpdateDestroyView,MyRecipeListView,SessionLogoutView
+from .views import UserRegisterView, UserRetrieveUpdateDestroyView,UserListCreate,UserLoginView
 
 #from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
 urlpatterns = [
     path('recipes/', RecipeListCreateView.as_view(),name='List-Create'),
     path('recipes/<int:pk>/',RecipeRetrieveUpdateDestroyView.as_view(),name='retrieve-update-delete'),
-    
+    path('api/myrecipes/',MyRecipeListView.as_view(),name='myrecipies'),
 
     path("user/login/", UserLoginView.as_view(), name="token_obtain_pair"),
     path("logout/",SessionLogoutView.as_view(),name='logout'),

@@ -28,7 +28,7 @@ class RecipeListCreateView(generics.ListCreateAPIView):
     filter_backends = [filters.SearchFilter, filters.OrderingFilter]
     search_fields=['title']
     order_fields=['-create_at']
-
+ 
     def list(self, request, *args, **kwargs):
         queryset = self.filter_queryset(self.get_queryset())
         if not queryset.exists():
@@ -37,12 +37,12 @@ class RecipeListCreateView(generics.ListCreateAPIView):
                 status=status.HTTP_404_NOT_FOUND
             )
         return super().list(request, *args, **kwargs)
-    
+   
     def get_permissions(self):
         if self.request.method == "POST":
             return [permissions.IsAuthenticated()]
         return [permissions.AllowAny()]
-    
+   
     def perform_create(self, serializer):
         serializer.save(created_by=self.request.user)
 
@@ -61,6 +61,20 @@ class RecipeRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
         self.perform_destroy(instance)
         return Response({"message":"Recipe deleted Successfully"})
     
+
+class MyRecipeListView(generics.ListAPIView):
+    serializer_class = RecipeSerializer
+    pagination_class = RecipePagination
+    permission_classes = [permissions.IsAuthenticated]
+    filter_backends = [filters.SearchFilter, filters.OrderingFilter]
+    search_fields = ['title']  
+    def get_queryset(self):
+        user = self.request.user
+        if user.is_staff or getattr(user, 'role', None) == 'admin':
+           
+            return Recipe.objects.all()
+       
+        return Recipe.objects.filter(created_by=user)
 
 #----------------------User----------------------------------------------#
 
